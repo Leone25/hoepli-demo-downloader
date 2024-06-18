@@ -1,0 +1,19 @@
+{
+  "name": "hoepli-demo-downloader",
+  "version": "1.0.0",
+  "description": "Download demo books from hoepli to PDF",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Enrico",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "pdf-lib": "^1.17.1",
+    "prompt-sync": "^4.2.0",
+    "puppeteer": "^18.1.0",
+    "yargs": "^17.7.2"
+  }
+}
