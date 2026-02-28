@@ -5,6 +5,8 @@ import { PDFDocument } from 'pdf-lib';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+
 const argv = yargs(process.argv)
 	.option('url', {
 		alias: 'u',
