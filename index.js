@@ -60,11 +60,17 @@ const prompt = PromptSync({ sigint: true });
 			textOverlay = `<img src="${url}/files/assets/common/page-vectorlayers/${("000" + pageName).slice(-4)}.svg" style="width: ${page.width}px; height: ${page.height}px; position: absolute; top: 0; left: 0;">`;
 		}
 
+		const substrate = await fetch(`${url}/files/assets/common/page-html5-substrates/page${("000" + pageName).slice(-4)}_${page.substrateSizesReady}.${page.substrateFormat}`).then(async (res) => {
+			const base64 = Buffer.from(await res.arrayBuffer()).toString("base64");
+			const contentType = res.headers.get("content-type");
+			return `data:${contentType};base64,${base64}`;
+		});
+
 		await browserPage.setContent(`
 			<!DOCTYPE html>
 			<html>
 				<body style="margin: 0; heigth: ${page.height}px; width: ${page.width}px; position: absolute; top: 0; left: 0; overflow: hidden;">
-					<img src="${url}/files/assets/common/page-html5-substrates/page${("000" + pageName).slice(-4)}_${page.substrateSizesReady}.${page.substrateFormat}" style="width: ${page.width}px; height: ${page.height}px; position: absolute; top: 0; left: 0;">
+					<img src="${substrate}" style="width: ${page.width}px; height: ${page.height}px; position: absolute; top: 0; left: 0;">
 					${textOverlay}
 				</body>
 			</html>
