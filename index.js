@@ -74,7 +74,11 @@ const prompt = PromptSync({ sigint: true });
 					${textOverlay}
 				</body>
 			</html>
-		`, { waitUntil: 'networkidle0' });
+		`, { waitUntil: 'domcontentloaded' });
+
+		await browserPage.evaluate(() => document.fonts.ready);
+
+		await new Promise(r => setTimeout(r, 100));
 
 		const pagePdf = await PDFDocument.load(await browserPage.pdf({height: page.height, width: page.width}));
 		const [firstDonorPage] = await doc.copyPages(pagePdf, [0]);
