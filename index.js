@@ -5,8 +5,6 @@ import { PDFDocument } from 'pdf-lib';
 import puppeteer from 'puppeteer';
 import fs from 'fs';
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
-
 const argv = yargs(process.argv)
 	.option('url', {
 		alias: 'u',
@@ -29,7 +27,11 @@ const prompt = PromptSync({ sigint: true });
 	while (!url)
 		url = prompt('Enter the URL of the demo book: ');
 
-	let page = await fetch(url).then((res) => res.text());
+	let page = await fetch(url).then((res) => res.text()).catch(err => {
+		console.log("Broken https detected, disabling TLS check");
+		process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+		return fetch(url).then((res) => res.text());
+	});
 
 	let title = page.match(/<title>([^<]+)<\/title>/)[1];
 
