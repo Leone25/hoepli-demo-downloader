@@ -16,6 +16,12 @@ const argv = yargs(process.argv)
 		type: 'string',
 		description: 'Output file',
 	})
+	.option('delay', {
+		alias: 'd',
+		type: 'number',
+		description: 'The delay between when the page loads and when the page is converted to PDF, increasing it helps on slower computers, but makes conversion slower',
+		default: 500,
+	})
 	.help()
 	.argv;
 
@@ -80,7 +86,7 @@ const prompt = PromptSync({ sigint: true });
 
 		await browserPage.evaluate(() => document.fonts.ready);
 
-		await new Promise(r => setTimeout(r, 500));
+		await new Promise(r => setTimeout(r, argv.delay));
 
 		const pagePdf = await PDFDocument.load(await browserPage.pdf({height: page.height, width: page.width}));
 		const [firstDonorPage] = await doc.copyPages(pagePdf, [0]);
